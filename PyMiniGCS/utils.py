@@ -2,12 +2,15 @@
 
 import sys
 
-if sys.platform == "windows2":
+if sys.platform == "win32":
     from _winreg import *
 
     def get_all_comports():
         ports = []
-        key = OpenKey(HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM")
+        try:
+            key = OpenKey(HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM")
+        except:
+            return []
         try:
             i = 0
             while True:

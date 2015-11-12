@@ -9,6 +9,7 @@ from PyQt4.QtGui import *
 import MainWin_rc
 from FirmwareUploader import *
 from ConnectionMgr import *
+from AttitudeView import *
 from utils import *
 
 class ParamTableModel(QAbstractTableModel): 
@@ -86,23 +87,29 @@ class MainWindow(QMainWindow) :
     status_signal = pyqtSignal(str)
     show_msg_signal = pyqtSignal((str, str))
     show_param_signal = pyqtSignal((int,  int,  str,  int,  str))
+    update_attitude_signal = pyqtSignal((float,  float,  float))
     
     def __init__(self):
         super(MainWindow, self).__init__()
         
-        self.setWindowTitle(u"MiniGS 飞控管理中心")
+        self.setWindowTitle(u"MiniGCS 飞控管理中心")
             
         self.tab = QTabWidget()
         self.tab.setTabPosition(QTabWidget.South)
         self.setCentralWidget(self.tab)
     
         self.infoView = QTextEdit()
+        self.attitudeView = AttitudeWidget()
       
         splitter = QSplitter(Qt.Vertical)
-        #splitter.setOrientation()
         
         splitter.addWidget(self.tab)
-        splitter.addWidget(self.infoView)
+        
+        h_splitter = QSplitter()
+        h_splitter.addWidget(self.infoView)
+        h_splitter.addWidget(self.attitudeView)
+        
+        splitter.addWidget(h_splitter)
         
         self.setCentralWidget(splitter)
         
@@ -156,6 +163,7 @@ class MainWindow(QMainWindow) :
         self.status_signal.connect(self.on_status)
         self.show_msg_signal.connect(self.on_show_msg)
         self.show_param_signal.connect(self.on_show_param)
+        self.update_attitude_signal.connect(self.on_update_attitude)
         
         self.last_info = None
         
@@ -176,6 +184,9 @@ class MainWindow(QMainWindow) :
     
     def show_msg(self, id, text):
         self.show_msg_signal.emit(id, text)
+    
+    def update_attitude(self, pitch, roll, yaw):
+        self.update_attitude_signal.emit(pitch, roll, yaw)
         
     @pyqtSlot(str)   
     def on_status(self,  status):
@@ -225,7 +236,12 @@ class MainWindow(QMainWindow) :
                 param[8] = self.params_info[p_id][3]
                 
         self.paramModel.update(param)
-            
+    
+    @pyqtSlot(float, float, float)   
+    def on_update_attitude(self, pitch, roll, yaw) :
+        #print pitch, roll, yaw
+        self.attitudeView.update_attitude(pitch, roll, yaw)
+        
     def closeEvent(self, event):
         #event.ignore()
         if self.conn_mgr and self.conn_mgr.running :
@@ -432,7 +448,7 @@ class MainWindow(QMainWindow) :
         return True
             
     def about(self):
-         QMessageBox.about(self, "About MiniGS",
-                u"MiniGS  V1.0  By Walker Li"
+         QMessageBox.about(self, "About MiniGCS",
+                u"MiniGCS  V1.0 By Walker Li"
                 )
     

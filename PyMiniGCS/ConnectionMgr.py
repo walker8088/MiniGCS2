@@ -151,7 +151,7 @@ class ConnectionManager():
         self.param_mgr = None 
         
     def start_request_data_stream(self,  master): 
-        master.mav.request_data_stream_send(self.status.target_system, self.status.target_component, 0, 1, 1)
+        master.mav.request_data_stream_send(self.status.target_system, self.status.target_component, 0, 10, 1)
         
         #master.mav.request_data_stream_send(self.status.target_system, self.status.target_component, 1, 1, 1)
         #master.mav.request_data_stream_send(self.status.target_system, self.status.target_component, 2, 1, 1)
@@ -303,7 +303,7 @@ class ConnectionManager():
         #print accv3, gyrov3, magv3 
         
     def on_msg_attitude(self, m,  master):
-        pass
+        self.observer.update_attitude(m.pitch, m.roll, m.yaw) 
         """
         time_boot_ms : 318067, 
         roll : 0.00354599650018, 
