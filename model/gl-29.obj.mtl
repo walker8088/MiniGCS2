@@ -1,0 +1,36 @@
+# File produced by Open Asset Import Library (http://www.assimp.sf.net)
+# (assimp v3.1.187496374)
+
+newmtl VMtl01
+Kd 0.4 0.4 0.4
+Ka 0.4 0.4 0.4
+Ks 0 0 0
+Ke 0 0 0
+d 1
+illum 1
+map_Kd gl-29_ch.tga
+
+newmtl VMtl02
+Kd 0 0.00784314 0.8
+Ka 0 0.00784314 0.8
+Ks 0 0 0
+Ke 0 0 0
+d 1
+illum 1
+
+newmtl VMtl03
+Kd 0.8 0.764706 0
+Ka 0.8 0.764706 0
+Ks 0 0 0
+Ke 0 0 0
+d 1
+illum 1
+
+newmtl JoinedMaterial_#7
+Kd 0.278431 0.278431 0.278431
+Ka 0.278431 0.278431 0.278431
+Ks 0 0 0
+Ke 0 0 0
+d 1
+illum 1
+
