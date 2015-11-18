@@ -19,7 +19,7 @@ hy = viewport[1]/2
 srf = pygame.display.set_mode(viewport, OPENGL | DOUBLEBUF)
  
 glLightfv(GL_LIGHT0, GL_POSITION,  (-40, 200, 100, 0.0))
-glLightfv(GL_LIGHT0, GL_AMBIENT, (0.2, 0.2, 0.2, 1.0))
+glLightfv(GL_LIGHT0, GL_AMBIENT, (0.7, 0.7, 0.7, 1.0))
 glLightfv(GL_LIGHT0, GL_DIFFUSE, (0.5, 0.5, 0.5, 1.0))
 glEnable(GL_LIGHT0)
 glEnable(GL_LIGHTING)
@@ -37,7 +37,7 @@ clock = pygame.time.Clock()
 glMatrixMode(GL_PROJECTION)
 glLoadIdentity()
 width, height = viewport
-gluPerspective(90.0, width/float(height), 1, 100.0)
+gluPerspective(90.0, width/float(height), 0.1, 100.0)
 glEnable(GL_DEPTH_TEST)
 glMatrixMode(GL_MODELVIEW)
  

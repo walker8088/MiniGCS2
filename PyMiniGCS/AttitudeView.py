@@ -1,4 +1,6 @@
 
+#pitch, roll, yaw from https://en.wikipedia.org/wiki/Aircraft_principal_axes
+
 import math
 
 from PyQt4.QtCore import *
@@ -11,6 +13,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 
 from obj_loader import *
+
 
 #--------------------------------------------------#
 class Cube(object):
@@ -96,7 +99,7 @@ class AttitudeWidget(QGLWidget):
     def initializeGL(self):   
         
         glEnable(GL_DEPTH_TEST)
-        glClearColor(0.0, 0.0, 0.0, 0.0)
+        glClearColor(0.3, 0.3, 0.3, 0.3)
         glShadeModel(GL_SMOOTH)
         glEnable(GL_BLEND)
         glEnable(GL_POLYGON_SMOOTH)
@@ -105,24 +108,60 @@ class AttitudeWidget(QGLWidget):
         glEnable(GL_LIGHTING)
         glEnable(GL_LIGHT0)
         #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.3, 0.3, 0.3, 1.0));
-        glLightfv(GL_LIGHT0, GL_AMBIENT, (0.8, 0.8, 0.8, 1.0));
+        glLightfv(GL_LIGHT0, GL_AMBIENT, (0.99, 0.99, 0.99, 1.0));
         
         self.obj = OBJ()
-        self.obj.load(os.path.join("model",'plane.obj'))       
+        self.obj.load(os.path.join("model",'gl-29.obj'))       
         self.obj.initGL()
-        
-        
+            
     def paintGL(self): 
         y_angle = math.degrees(self.pitch)
         x_angle = math.degrees(self.roll)
-        z_angle = math.degrees(self.yaw)
+        z_angle = math.degrees(self.yaw - math.pi/2)
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        '''
-        glColor((1.,1.,1.))
-        glLineWidth(1.0)
-        glBegin(GL_LINES)
+        
+        #self.paintBox()
+        
+        glPushMatrix()
+        
+        glRotate(float(z_angle), 0, -1, 0)
+        glRotate(float(y_angle), 0, 0, -1)
+        glRotate(float(x_angle), -1, 0, 0)
+        
+        #self.cube.render()
+        glCallList(self.obj.gl_list)
+        
+        glPopMatrix()
 
+    def resizeGL(self, width, height):
+        if (width == 0) or (height == 0):
+            return
+            
+        glViewport(0, 0, width, height)
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+        gluPerspective(20.0, float(width) / height, 0.001, 100.0)
+        #gluPerspective(120.0, width/float(height), 0.001, 100.0)
+        
+        glMatrixMode(GL_MODELVIEW)
+        glLoadIdentity()
+        
+        gluLookAt(0.0, 1.0, -5.0,
+              0.0, 0.0, 0.0,
+              0.0, 1.0, 0.0)
+        #
+        #gluLookAt(0.0, 1.0, -5.0,
+        #      0.0, 0.0, 0.0,
+        #      0.0, 1.0, 0.0)
+        
+    def paintBox(self):
+    
+        glColor((1.,1.,1.))
+        glLineWidth(0.3)
+        
+        glBegin(GL_LINES)
+        
         for x in range(-20, 22, 2):
             glVertex3f(x/10.,-1,-1)
             glVertex3f(x/10.,-1,1)
@@ -156,34 +195,5 @@ class AttitudeWidget(QGLWidget):
             glVertex3f(2, y/10., -1)
 
         glEnd()
-        '''
-        glPushMatrix()
         
-        glRotate(float(x_angle), 1, 0, 0)
-        glRotate(float(y_angle), 0, 0, 1)
-        glRotate(float(z_angle), 0, -1, 0)
-        
-        #self.cube.render()
-        glCallList(self.obj.gl_list)
-        
-        glPopMatrix()
-
-    def resizeGL(self, width, height):
-        glViewport(0, 0, width, height)
-        glMatrixMode(GL_PROJECTION)
-        glLoadIdentity()
-        #gluPerspective(45.0, float(width) / height, 0.001, 10.0)
-        gluPerspective(120.0, width/float(height), 0.001, 100.0)
-        
-        glMatrixMode(GL_MODELVIEW)
-        glLoadIdentity()
-        
-        gluLookAt(0.0, 1.0, -5.0,
-              0.0, 0.0, 0.0,
-              0.0, 1.0, 0.0)
-        #
-        #gluLookAt(0.0, 1.0, -5.0,
-        #      0.0, 0.0, 0.0,
-        #      0.0, 1.0, 0.0)
-
 #--------------------------------------------------#
