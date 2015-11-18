@@ -10,6 +10,8 @@ from PyQt4.QtOpenGL import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
+from obj_loader import *
+
 #--------------------------------------------------#
 class Cube(object):
 
@@ -65,14 +67,16 @@ class Cube(object):
 class AttitudeWidget(QGLWidget):
     def __init__(self, parent=None):
         QGLWidget.__init__(self, QGLFormat(QGL.SampleBuffers), parent)
+        
         self.xRot = 0
         self.yRot = 0
         self.zRot = 0
+        
         self.lastPos = QPoint()
         self.trolltechGreen = QColor.fromCmykF(0.40, 0.0, 1.0, 0.0)
         self.trolltechPurple = QColor.fromCmykF(0.39, 0.39, 0.0, 0.0)
         self.cube = Cube((0.0, 0.0, 0.0), (.5, .5, .7))
-
+        
         self.pitch = 0.0
         self.roll = 0.0
         self.yaw = 0.0
@@ -90,6 +94,7 @@ class AttitudeWidget(QGLWidget):
         self.updateGL()
 
     def initializeGL(self):   
+        
         glEnable(GL_DEPTH_TEST)
         glClearColor(0.0, 0.0, 0.0, 0.0)
         glShadeModel(GL_SMOOTH)
@@ -99,17 +104,23 @@ class AttitudeWidget(QGLWidget):
         glEnable(GL_COLOR_MATERIAL)
         glEnable(GL_LIGHTING)
         glEnable(GL_LIGHT0)
-        glLightfv(GL_LIGHT0, GL_AMBIENT, (0.3, 0.3, 0.3, 1.0));
-
+        #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.3, 0.3, 0.3, 1.0));
+        glLightfv(GL_LIGHT0, GL_AMBIENT, (0.8, 0.8, 0.8, 1.0));
+        
+        self.obj = OBJ()
+        self.obj.load(os.path.join("model",'plane.obj'))       
+        self.obj.initGL()
+        
+        
     def paintGL(self): 
         y_angle = math.degrees(self.pitch)
         x_angle = math.degrees(self.roll)
         z_angle = math.degrees(self.yaw)
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
+        '''
         glColor((1.,1.,1.))
-        glLineWidth(0.5)
+        glLineWidth(1.0)
         glBegin(GL_LINES)
 
         for x in range(-20, 22, 2):
@@ -145,24 +156,34 @@ class AttitudeWidget(QGLWidget):
             glVertex3f(2, y/10., -1)
 
         glEnd()
+        '''
         glPushMatrix()
-
+        
         glRotate(float(x_angle), 1, 0, 0)
         glRotate(float(y_angle), 0, 0, 1)
         glRotate(float(z_angle), 0, -1, 0)
-
-        self.cube.render()
+        
+        #self.cube.render()
+        glCallList(self.obj.gl_list)
+        
         glPopMatrix()
 
     def resizeGL(self, width, height):
         glViewport(0, 0, width, height)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        gluPerspective(45.0, float(width) / height, 0.001, 10.0)
+        #gluPerspective(45.0, float(width) / height, 0.001, 10.0)
+        gluPerspective(120.0, width/float(height), 0.001, 100.0)
+        
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
+        
         gluLookAt(0.0, 1.0, -5.0,
               0.0, 0.0, 0.0,
               0.0, 1.0, 0.0)
+        #
+        #gluLookAt(0.0, 1.0, -5.0,
+        #      0.0, 0.0, 0.0,
+        #      0.0, 1.0, 0.0)
 
 #--------------------------------------------------#

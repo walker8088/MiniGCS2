@@ -92,7 +92,7 @@ class MainWindow(QMainWindow) :
     def __init__(self):
         super(MainWindow, self).__init__()
         
-        self.setWindowTitle(u"MiniGCS 飞控管理中心")
+        self.setWindowTitle(u"MiniGCS")
             
         self.tab = QTabWidget()
         self.tab.setTabPosition(QTabWidget.South)
@@ -266,6 +266,7 @@ class MainWindow(QMainWindow) :
             self.connectAct.setText(u"断开连接")
             self.paramsMgrAct.setEnabled(True)
             self.portDetectAct.setEnabled(False)
+            self.calibrationMagAct.setEnabled(True)
             self.burnRomAct.setEnabled(False)
         else :
             self.connectAct.setText(u"连接飞控")
@@ -273,6 +274,7 @@ class MainWindow(QMainWindow) :
             self.conn_mgr = None
             self.paramsMgrAct.setEnabled(False)
             self.portDetectAct.setEnabled(True)
+            self.calibrationMagAct.setEnabled(False)
             self.burnRomAct.setEnabled(True)
             
     def onBurnRom(self):

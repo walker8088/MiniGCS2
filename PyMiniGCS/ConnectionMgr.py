@@ -424,8 +424,9 @@ class ConnectionManager():
         if msg_handler :
             msg_handler(m, master) 
         else :
-            print "msg handler not found", msg_handler_func_name
-        
+            #print "msg handler not found", msg_handler_func_name
+            pass
+            
         if mtype not in ["PARAM_VALUE", "STATUSTEXT"]:
             self.status.last_msg[mtype] = m  
             msg = ' '.join(str(m).split()[1:])[1:-1]
