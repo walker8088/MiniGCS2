@@ -7,13 +7,16 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4.QtOpenGL import *
 
-#from OpenGL import GL, GLU
-
+from ctypes import util
+try:
+    from OpenGL.platform import win32
+except AttributeError:
+    pass
+    
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-from obj_loader import *
-
+from Model3D import *
 
 #--------------------------------------------------#
 class Cube(object):
@@ -71,19 +74,13 @@ class AttitudeWidget(QGLWidget):
     def __init__(self, parent=None):
         QGLWidget.__init__(self, QGLFormat(QGL.SampleBuffers), parent)
         
-        self.xRot = 0
-        self.yRot = 0
-        self.zRot = 0
-        
-        self.lastPos = QPoint()
-        self.trolltechGreen = QColor.fromCmykF(0.40, 0.0, 1.0, 0.0)
-        self.trolltechPurple = QColor.fromCmykF(0.39, 0.39, 0.0, 0.0)
-        self.cube = Cube((0.0, 0.0, 0.0), (.5, .5, .7))
-        
         self.pitch = 0.0
         self.roll = 0.0
         self.yaw = 0.0
-
+        
+        self.obj = OBJ()
+        self.obj_file = os.path.join("model",'flight.obj')
+        
     def minimumSizeHint(self):
         return QSize(70, 50)
 
@@ -97,9 +94,8 @@ class AttitudeWidget(QGLWidget):
         self.updateGL()
 
     def initializeGL(self):   
-        
         glEnable(GL_DEPTH_TEST)
-        glClearColor(0.3, 0.3, 0.3, 0.3)
+        glClearColor(0.2, 0.2, 0.2, 0.2)
         glShadeModel(GL_SMOOTH)
         glEnable(GL_BLEND)
         glEnable(GL_POLYGON_SMOOTH)
@@ -107,14 +103,12 @@ class AttitudeWidget(QGLWidget):
         glEnable(GL_COLOR_MATERIAL)
         glEnable(GL_LIGHTING)
         glEnable(GL_LIGHT0)
-        #glLightfv(GL_LIGHT0, GL_AMBIENT, (0.3, 0.3, 0.3, 1.0));
-        glLightfv(GL_LIGHT0, GL_AMBIENT, (0.99, 0.99, 0.99, 1.0));
-        
-        self.obj = OBJ()
-        self.obj.load(os.path.join("model",'gl-29.obj'))       
+        self.obj.load(self.obj_file)       
         self.obj.initGL()
+        glLightfv(GL_LIGHT0, GL_AMBIENT, (1.0, 1.0, 1.0, 1.0));
             
     def paintGL(self): 
+    
         y_angle = math.degrees(self.pitch)
         x_angle = math.degrees(self.roll)
         z_angle = math.degrees(self.yaw - math.pi/2)

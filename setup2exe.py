@@ -6,21 +6,22 @@ import sys
 if len(sys.argv) == 1:
     sys.argv.append("py2exe")
     
-includes = ["encodings", "encodings.*"]  
 options = {"py2exe":  
              {   "compressed": 1,  
-                 "optimize": 2,  
-                 "includes": includes,  
+                 "optimize": 1,  
+                 "includes": ["sip","encodings", "encodings.*","ctypes", "logging"],  
 		 "dist_dir": "bin", 
-                 #"bundle_files": 1  
+                 "bundle_files": 3,
+		 "excludes":["pythoncom"],		 
+		 #"dll_excludes": ["numpy-atlas.dll"],		 
              }  
            }  
 setup(     
      version = "1.0",  
-     description = "MiniFM Application",  
-     name = "MiniFM",  
+     description = "MiniGCS Application",  
+     name = "MiniGCS",  
      options = options,  
      zipfile=None,  
-     windows=[{"script": "MiniFM.py", "icon_resources": [(1, "MiniFM.ico")] }],    
-     data_files=[("", ['MiniFM.ico', ]), ("images",glob.glob("images\\*.png"))],  
+     windows=[{"script": "MiniGCS.py", "icon_resources": [(1, "MiniGCS.ico")] }],    
+     data_files=[("", ['MiniGCS.ico', ]), ("images",glob.glob("images\\*.png"))],  
      ) 

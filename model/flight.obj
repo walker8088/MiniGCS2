@@ -1,7 +1,5 @@
-# File produced by Open Asset Import Library (http://www.assimp.sf.net)
-# (assimp v3.1.187496374)
 
-mtllib gl-29.obj.mtl
+mtllib flight.obj.mtl
 
 # 526 vertex positions
 v  0.510513 0.095388 0.00280581
