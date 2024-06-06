@@ -1,5 +1,5 @@
-
 import math
+
 
 class Vector3():
     def __init__(self, x, y, z):
@@ -19,7 +19,7 @@ class Vector3():
     def __eq__(self, other):
         return self.x == other.x and self.y == other.y and self.z == other.z
 
-    #重载 "!=" 操作符     
+    #重载 "!=" 操作符
     def __ne__(self, other):
         return self.x != other.x or self.y != other.y or self.z != other.z
 
@@ -38,10 +38,10 @@ class Vector3():
     #重载 "*" 操作符
     def __mul__(self, a):
         return Vector3(self.x * a, self.y * a, self.z * a)
-    
+
     #重载 "/" 操作符
     def __div__(self, a):
-        if(a != 0):
+        if (a != 0):
             return Vector3(self.x / a, self.y / a, self.z / a)
         else:
             return None
@@ -66,10 +66,10 @@ class Vector3():
         self.y *= a
         self.z *= a
         return self
-    
+
     #重载 "/=" 操作符
     def __idiv__(self, a):
-        if(a != 0):
+        if (a != 0):
             self.x /= a
             self.y /= a
             self.z /= a
@@ -78,20 +78,21 @@ class Vector3():
     #向量标准化
     def normalize(self):
         magSq = self.x * self.x + self.y * self.y + self.z * self.z
-        if(magSq >0):
-            oneOverMag = 1.0/ math.sqrt(magSq)
+        if (magSq > 0):
+            oneOverMag = 1.0 / math.sqrt(magSq)
             self.x *= oneOverMag
             self.y *= oneOverMag
             self.z *= oneOverMag
-    
+
     #向量求模
     def vectorMag(self):
         return math.sqrt(self.x * self.x + self.y * self.y + self.z * self.z)
 
     #向量显示
-    def toString(self):       
-        print "{x:" + str(self.x)+ ",y:" + str(self.y) + ",z:" + str(self.z)+"}"
-   
+    def toString(self):
+        print("{x:" + str(self.x) + ",y:" + str(self.y) + ",z:" + str(
+            self.z) + "}")
+
     #向量点乘
     def dotProduct(self, other):
         return self.x * other.x + self.y * other.y + self.z * other.z
@@ -101,5 +102,4 @@ class Vector3():
         x = self.y * other.z - va.z * other.y
         y = self.z * other.x - va.x * other.z
         z = self.x * other.y - va.y * other.x
-        return Vector3(x,y,z)
-    
+        return Vector3(x, y, z)

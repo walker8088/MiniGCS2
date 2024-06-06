@@ -1,2 +1,2 @@
 
-from MainWin import main
+from .MainWin import main
