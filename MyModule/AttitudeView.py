@@ -93,7 +93,7 @@ class AttitudeWidget(QOpenGLWidget):
         self.pitch = pitch
         self.roll = roll
         self.yaw = yaw
-        self.updateGL()
+        self.update()
 
     def initializeGL(self):
         glEnable(GL_DEPTH_TEST)

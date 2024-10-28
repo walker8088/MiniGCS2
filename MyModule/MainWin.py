@@ -16,7 +16,6 @@ app = None
 
 #-------------------------------------------------#
 
-
 class ParamTableModel(QAbstractTableModel):
     def __init__(self, parent=None, *args):
         QAbstractTableModel.__init__(self, parent, *args)
@@ -274,8 +273,8 @@ class MainWindow(QMainWindow):
             param[8] = self.params_info[p_id][3]
 
         self.paramModel.update(param)
-        if str(param_id).startswith('ATC_RAT_'):
-            print(param_id, value)
+        #if str(param_id).startswith('ATC_RAT_'):
+        #    print(param_id, value)
 
     #@pyqtSlot(float, float, float)
     def on_update_attitude(self, pitch, roll, yaw):
@@ -346,7 +345,7 @@ class MainWindow(QMainWindow):
                 self.conn_mgr = None
                 return
             self.connectAct.setText("断开连接")
-            self.connectUdpAct.setEnabled(False)
+            #self.connectUdpAct.setEnabled(False)
             self.paramsMgrAct.setEnabled(True)
             self.portDetectAct.setEnabled(False)
             self.calibrationAct.setEnabled(True)
@@ -356,24 +355,24 @@ class MainWindow(QMainWindow):
             self.connectAct.setText("连接飞控")
             self.conn_mgr.close()
             self.conn_mgr = None
-            self.connectUdpAct.setEnabled(True)
+            #self.connectUdpAct.setEnabled(True)
             self.paramsMgrAct.setEnabled(False)
             self.portDetectAct.setEnabled(True)
             self.calibrationAct.setEnabled(False)
             self.calibrationMagAct.setEnabled(False)
             self.burnRomAct.setEnabled(True)
-
+    '''
     def onConnectUdp(self):
         if (not self.conn_mgr) or (not self.conn_mgr.running):
             try:
                 self.conn_mgr = ConnectionManager(self)
                 self.conn_mgr.open_tcp('192.168.1.63', 5762)
-#self.conn_mgr.open_udp('192.168.43.1', 14550)
+                #self.conn_mgr.open_udp('192.168.43.1', 14550)
 
             except:
                 self.conn_mgr = None
                 return
-            self.connectUdpAct.setText("断开连接")
+            #self.connectUdpAct.setText("断开连接")
             self.connectAct.setEnabled(False)
             self.paramsMgrAct.setEnabled(True)
             self.portDetectAct.setEnabled(False)
@@ -381,7 +380,7 @@ class MainWindow(QMainWindow):
             self.calibrationMagAct.setEnabled(True)
             self.burnRomAct.setEnabled(False)
         else:
-            self.connectUdpAct.setText("连接奥丁")
+            #self.connectUdpAct.setText("连接奥丁")
             self.conn_mgr.close()
             self.conn_mgr = None
             if len(str(self.portView.currentText())) > 0:
@@ -391,7 +390,7 @@ class MainWindow(QMainWindow):
             self.calibrationAct.setEnabled(False)
             self.calibrationMagAct.setEnabled(False)
             self.burnRomAct.setEnabled(True)
-
+    '''
     def onBurnRom(self):
         port = str(self.portView.currentText())
         fileName = QFileDialog.getOpenFileName(self, "选择固件文件", "",
@@ -500,9 +499,9 @@ class MainWindow(QMainWindow):
                                      triggered=self.onPortDetect)
         self.burnRomAct = QAction("烧写ROM", self, triggered=self.onBurnRom)
         self.connectAct = QAction("连接飞控", self, triggered=self.onConnect)
-        self.connectUdpAct = QAction("连接奥丁",
-                                     self,
-                                     triggered=self.onConnectUdp)
+        #self.connectUdpAct = QAction("连接奥丁",
+        #                             self,
+        #                             triggered=self.onConnectUdp)
         self.paramsMgrAct = QAction("参数写入",
                                     self,
                                     triggered=self.onWriteParams)
@@ -513,7 +512,7 @@ class MainWindow(QMainWindow):
                                          self,
                                          triggered=self.onCalibrationMag)
 
-        self.connectAct.setEnabled(False)
+        #self.connectAct.setEnabled(False)
         self.paramsMgrAct.setEnabled(False)
         self.calibrationAct.setEnabled(False)
         self.calibrationMagAct.setEnabled(False)
@@ -560,7 +559,7 @@ class MainWindow(QMainWindow):
         self.toolBar.addWidget(self.baudView)
 
         self.toolBar.addAction(self.connectAct)
-        self.toolBar.addAction(self.connectUdpAct)
+        #self.toolBar.addAction(self.connectUdpAct)
 
         self.toolBar.addAction(self.paramsMgrAct)
         self.toolBar.addAction(self.calibrationAct)

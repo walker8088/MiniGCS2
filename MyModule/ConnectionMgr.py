@@ -3,13 +3,10 @@
 import sys, os, struct, math, time, socket
 import fnmatch, errno, threading
 
-#from pyrr import *
 from pymavlink import *
-
 from .ParamMgr import *
 
 #	MAV_CMD_PREFLIGHT_CALIBRATION
-
 
 def get_usec():
     '''time since 1970 in microseconds'''
@@ -248,7 +245,7 @@ class ConnectionManager():
         """
 
     def on_msg_heartbeat(self, m, master):
-        print(m)
+        #print(m)
         if (self.status.target_system != m.get_srcSystem()
                 or self.status.target_component != m.get_srcComponent()):
             self.status.target_system = m.get_srcSystem()
@@ -481,7 +478,7 @@ class ConnectionManager():
             return True
 
     def on_recv_callback(self, m, master):
-        print(m)
+        #print(m)
         mtype = m.get_type()
 
         if mtype == "BAD_DATA":
